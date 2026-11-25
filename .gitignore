@@ -1,0 +1,19 @@
+# dependencies
+/node_modules
+
+# compiled output
+/dist
+/tmp
+/out-tsc
+/bazel-out
+
+# IDE / System
+/.angular/cache
+.DS_Store
+Thumbs.db
+
+# misc
+*.zip
+decode_pdf.py
+extract.ps1
+/.netlify

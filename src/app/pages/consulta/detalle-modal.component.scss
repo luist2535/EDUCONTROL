@@ -1,0 +1,90 @@
+.detalle-content {
+  padding: 8px 0;
+}
+
+.actividad-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 12px;
+
+  h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--ion-color-dark);
+  }
+}
+
+.prioritaria-badge {
+  margin-top: 8px;
+  font-weight: 500;
+}
+
+.detail-list {
+  --background: transparent;
+
+  ion-item {
+    --padding-start: 0;
+    --padding-end: 0;
+
+    ion-icon {
+      font-size: 1.25rem;
+      margin-right: 12px;
+    }
+
+    ion-label {
+      h3 {
+        margin: 0 0 4px 0;
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: var(--ion-color-medium);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      p {
+        margin: 0;
+        font-size: 1rem;
+        color: var(--ion-color-dark);
+      }
+    }
+  }
+}
+
+.recursos-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.recurso-chip {
+  --padding-start: 12px;
+  --padding-end: 12px;
+  --padding-top: 6px;
+  --padding-bottom: 6px;
+  border-radius: 20px;
+  font-weight: 500;
+  font-size: 0.85rem;
+
+  ion-icon {
+    font-size: 1rem;
+    margin-right: 6px;
+  }
+}
+
+.modal-actions {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+@media (max-width: 480px) {
+  .actividad-header h2 {
+    font-size: 1.25rem;
+  }
+}

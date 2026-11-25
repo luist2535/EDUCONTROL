@@ -1,0 +1,77 @@
+<ion-app>
+  <!-- Menú lateral -->
+  <ion-menu contentId="main-content" type="overlay" side="start">
+    <ion-content class="menu-content">
+      <!-- Encabezado visual del menú -->
+      <div class="menu-hero">
+        <div class="brand-row">
+          <div class="brand-logo">
+            <ion-icon name="school-outline"></ion-icon>
+          </div>
+          <div class="brand-info">
+            <h2>EduControl</h2>
+            <span>Gestión Académica Móvil</span>
+          </div>
+        </div>
+
+        <div class="menu-mini-stats">
+          <div class="mini-pill">
+            <span class="pill-num">{{ estadisticas.total }}</span>
+            <span class="pill-lbl">Registradas</span>
+          </div>
+          <div class="mini-pill warning">
+            <span class="pill-num">{{ estadisticas.pendientes }}</span>
+            <span class="pill-lbl">Pendientes</span>
+          </div>
+          <div class="mini-pill success">
+            <span class="pill-num">{{ estadisticas.progreso }}%</span>
+            <span class="pill-lbl">Avance</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="menu-section-title">NAVEGACIÓN PRINCIPAL</div>
+
+      <ion-list lines="none" class="menu-list">
+        @for (page of appPages; track page.url) {
+          <ion-item
+            button
+            detail="false"
+            [routerLink]="page.url"
+            routerLinkActive="active-link"
+            routerDirection="root"
+            (click)="navegar(page.url)"
+            class="menu-item ion-activatable ripple-parent">
+            <div class="menu-icon-box" slot="start">
+              <ion-icon [name]="page.icon"></ion-icon>
+            </div>
+            <ion-label>
+              <h3>{{ page.title }}</h3>
+              <p>{{ page.subtitle }}</p>
+            </ion-label>
+            @if (page.showBadge && estadisticas.pendientes > 0) {
+              <ion-badge color="warning" slot="end">{{ estadisticas.pendientes }}</ion-badge>
+            }
+            <ion-ripple-effect></ion-ripple-effect>
+          </ion-item>
+        }
+      </ion-list>
+
+      <div class="menu-footer">
+        <button type="button" class="demo-menu-btn ion-activatable ripple-parent" (click)="cargarDemoDesdeMenu()">
+          <ion-icon name="sparkles-outline"></ion-icon>
+          <span>Cargar datos de ejemplo</span>
+          <ion-ripple-effect></ion-ripple-effect>
+        </button>
+
+        <div class="footer-meta">
+          <p class="app-ver">EduControl v1.0 • Ionic + Angular</p>
+          <p class="subtitle">Persistencia activa en LocalStorage</p>
+        </div>
+      </div>
+    </ion-content>
+  </ion-menu>
+
+  <!-- Contenido principal -->
+  <ion-router-outlet id="main-content"></ion-router-outlet>
+</ion-app>

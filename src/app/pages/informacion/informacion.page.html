@@ -1,0 +1,125 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home" text="Regresar"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Información Académica</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="page-container">
+    <div class="page-header">
+      <div class="header-icon-box">
+        <ion-icon name="school-outline"></ion-icon>
+      </div>
+      <div class="header-text">
+        <span class="header-tag">PLAN DE ESTUDIOS • SEMESTRE ACTUAL</span>
+        <h1>Asignaturas del Semestre</h1>
+        <p>Expande cada acordeón para consultar el docente, descripción y estado de actividades en LocalStorage</p>
+      </div>
+    </div>
+
+    <!-- Grupo de acordeones con mínimo tres asignaturas -->
+    <ion-accordion-group value="programacion-movil" class="accordion-group">
+      @for (asignatura of asignaturas; track asignatura.nombre) {
+        <ion-accordion [value]="getAccordionValue(asignatura.nombre)" class="subject-accordion">
+          <ion-item slot="header" lines="none" class="accordion-header">
+            <div class="subject-icon-box" slot="start">
+              <ion-icon [name]="getAsignaturaIcon(asignatura.nombre)"></ion-icon>
+            </div>
+            <ion-label class="accordion-title">
+              <h2>{{ asignatura.nombre }}</h2>
+              <p class="docente">
+                <ion-icon name="person-circle-outline"></ion-icon>
+                {{ asignatura.docente }}
+              </p>
+            </ion-label>
+            <div class="accordion-stats" slot="end">
+              <span class="stat-chip total" title="Total registradas">{{ getStats(asignatura.nombre).total }} reg.</span>
+              <span class="stat-chip pendientes" title="Pendientes">{{ getStats(asignatura.nombre).pendientes }} pend.</span>
+              <span class="stat-chip completadas" title="Completadas">{{ getStats(asignatura.nombre).completadas }} comp.</span>
+            </div>
+          </ion-item>
+
+          <!-- Contenido al expandir el acordeón -->
+          <div class="accordion-content" slot="content">
+            <div class="info-cards-grid">
+              <div class="info-detail-box">
+                <span class="detail-label">NOMBRE DE LA ASIGNATURA</span>
+                <strong>{{ asignatura.nombre }}</strong>
+              </div>
+              <div class="info-detail-box">
+                <span class="detail-label">NOMBRE DEL DOCENTE</span>
+                <strong>{{ asignatura.docente }}</strong>
+              </div>
+            </div>
+
+            <div class="description-box">
+              <span class="detail-label">DESCRIPCIÓN DE LA ASIGNATURA</span>
+              <p>{{ asignatura.descripcion }}</p>
+            </div>
+
+            <div class="content-section stats-section">
+              <h3>Actividades Calculadas desde LocalStorage</h3>
+              <div class="stats-grid">
+                <div class="stat-item total">
+                  <div class="stat-mini-icon blue">
+                    <ion-icon name="list-outline"></ion-icon>
+                  </div>
+                  <div>
+                    <span class="stat-value">{{ getStats(asignatura.nombre).total }}</span>
+                    <span class="stat-label">Registradas</span>
+                  </div>
+                </div>
+                <div class="stat-item pendientes">
+                  <div class="stat-mini-icon amber">
+                    <ion-icon name="time-outline"></ion-icon>
+                  </div>
+                  <div>
+                    <span class="stat-value">{{ getStats(asignatura.nombre).pendientes }}</span>
+                    <span class="stat-label">Pendientes</span>
+                  </div>
+                </div>
+                <div class="stat-item completadas">
+                  <div class="stat-mini-icon emerald">
+                    <ion-icon name="checkmark-circle-outline"></ion-icon>
+                  </div>
+                  <div>
+                    <span class="stat-value">{{ getStats(asignatura.nombre).completadas }}</span>
+                    <span class="stat-label">Completadas</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="progress-container">
+                <div class="progress-label-row">
+                  <span>Avance en {{ asignatura.nombre }}</span>
+                  <strong>{{ getProgresoPorcentaje(asignatura.nombre) }}% completado</strong>
+                </div>
+                <ion-progress-bar
+                  [value]="getProgreso(asignatura.nombre)"
+                  color="primary"
+                  type="determinate">
+                </ion-progress-bar>
+              </div>
+            </div>
+
+            <div class="actions-section">
+              <a routerLink="/registro" [queryParams]="{ asignatura: asignatura.nombre }" class="action-link primary ion-activatable ripple-parent">
+                <ion-icon name="add-circle-outline"></ion-icon>
+                <span>Registrar actividad para {{ asignatura.nombre }}</span>
+                <ion-ripple-effect></ion-ripple-effect>
+              </a>
+              <a routerLink="/consulta" class="action-link secondary ion-activatable ripple-parent">
+                <ion-icon name="search-outline"></ion-icon>
+                <span>Consultar actividades</span>
+                <ion-ripple-effect></ion-ripple-effect>
+              </a>
+            </div>
+          </div>
+        </ion-accordion>
+      }
+    </ion-accordion-group>
+  </div>
+</ion-content>

@@ -1,0 +1,196 @@
+/* ============================================
+   EduControl - Estilos Globales Pro
+   ============================================ */
+
+/* Core CSS requerido para que los componentes de Ionic funcionen correctamente */
+@import "@ionic/angular/css/core.css";
+
+/* CSS básico recomendado para aplicaciones con Ionic */
+@import "@ionic/angular/css/normalize.css";
+@import "@ionic/angular/css/structure.css";
+@import "@ionic/angular/css/typography.css";
+@import "@ionic/angular/css/display.css";
+
+/* Utilidades CSS opcionales */
+@import "@ionic/angular/css/padding.css";
+@import "@ionic/angular/css/float-elements.css";
+@import "@ionic/angular/css/text-alignment.css";
+@import "@ionic/angular/css/text-transformation.css";
+@import "@ionic/angular/css/flex-utils.css";
+
+:root {
+  --ion-font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --ion-color-white: #ffffff;
+
+  /* Paleta moderna académica Indigo / Royal Blue */
+  --ion-color-primary: #2563eb;
+  --ion-color-primary-rgb: 37, 99, 235;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade: #1d4ed8;
+  --ion-color-primary-tint: #eff6ff;
+
+  --ion-color-secondary: #0891b2;
+  --ion-color-secondary-rgb: 8, 145, 178;
+  --ion-color-secondary-contrast: #ffffff;
+  --ion-color-secondary-contrast-rgb: 255, 255, 255;
+  --ion-color-secondary-shade: #0e7490;
+  --ion-color-secondary-tint: #ecfeff;
+
+  --ion-color-tertiary: #6366f1;
+  --ion-color-tertiary-rgb: 99, 102, 241;
+  --ion-color-tertiary-contrast: #ffffff;
+  --ion-color-tertiary-contrast-rgb: 255, 255, 255;
+  --ion-color-tertiary-shade: #4f46e5;
+  --ion-color-tertiary-tint: #eef2ff;
+
+  --ion-color-success: #10b981;
+  --ion-color-success-rgb: 16, 185, 129;
+  --ion-color-success-contrast: #ffffff;
+  --ion-color-success-contrast-rgb: 255, 255, 255;
+  --ion-color-success-shade: #059669;
+  --ion-color-success-tint: #ecfdf5;
+
+  --ion-color-warning: #f59e0b;
+  --ion-color-warning-rgb: 245, 158, 11;
+  --ion-color-warning-contrast: #ffffff;
+  --ion-color-warning-contrast-rgb: 255, 255, 255;
+  --ion-color-warning-shade: #d97706;
+  --ion-color-warning-tint: #fffbeb;
+
+  --ion-color-danger: #ef4444;
+  --ion-color-danger-rgb: 239, 68, 68;
+  --ion-color-danger-contrast: #ffffff;
+  --ion-color-danger-contrast-rgb: 255, 255, 255;
+  --ion-color-danger-shade: #dc2626;
+  --ion-color-danger-tint: #fef2f2;
+
+  --ion-color-light: #f1f5f9;
+  --ion-color-light-rgb: 241, 245, 249;
+  --ion-color-light-contrast: #0f172a;
+  --ion-color-light-contrast-rgb: 15, 23, 42;
+  --ion-color-light-shade: #e2e8f0;
+  --ion-color-light-tint: #f8fafc;
+
+  --ion-color-medium: #64748b;
+  --ion-color-medium-rgb: 100, 116, 139;
+  --ion-color-medium-contrast: #ffffff;
+  --ion-color-medium-contrast-rgb: 255, 255, 255;
+  --ion-color-medium-shade: #475569;
+  --ion-color-medium-tint: #94a3b8;
+
+  --ion-color-dark: #0f172a;
+  --ion-color-dark-rgb: 15, 23, 42;
+  --ion-color-dark-contrast: #ffffff;
+  --ion-color-dark-contrast-rgb: 255, 255, 255;
+  --ion-color-dark-shade: #020617;
+  --ion-color-dark-tint: #1e293b;
+
+  /* Sombras y transiciones */
+  --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.06);
+  --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.06);
+  --shadow-lg: 0 10px 25px rgba(15, 23, 42, 0.09);
+  --shadow-xl: 0 20px 35px rgba(37, 99, 235, 0.16);
+
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--ion-font-family);
+  color: var(--ion-color-dark);
+  background-color: var(--ion-color-light);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Contenedor centrado para presentación en escritorio y móvil */
+.page-container {
+  max-width: 920px;
+  margin: 0 auto;
+  padding-bottom: 84px;
+}
+
+/* Header y Toolbars */
+ion-header {
+  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.07);
+}
+
+ion-toolbar[color="primary"] {
+  --background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 55%, #4338ca 100%);
+  --color: #ffffff;
+  --min-height: 60px;
+
+  ion-title {
+    font-weight: 700;
+    letter-spacing: -0.3px;
+    font-size: 1.15rem;
+  }
+}
+
+/* Content background */
+ion-content {
+  --background: #f1f5f9;
+}
+
+/* Cards */
+ion-card {
+  --background: #ffffff;
+  border-radius: 18px;
+  box-shadow: var(--shadow-md);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  margin: 0 0 20px 0;
+}
+
+/* Buttons */
+ion-button {
+  --border-radius: 10px;
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: 0.1px;
+}
+
+/* Badges */
+ion-badge {
+  --border-radius: 8px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+}
+
+/* Modal personalizado */
+ion-modal.detalle-modal {
+  --border-radius: 20px;
+  --box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.25);
+}
+
+/* Ripple parent helper */
+.ripple-parent {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Scrollbar elegante */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}

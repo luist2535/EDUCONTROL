@@ -1,0 +1,182 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button [defaultHref]="modoEdicion ? '/consulta' : '/home'" text="Regresar"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ modoEdicion ? 'Modificar Actividad' : 'Registro de Actividades' }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="page-container">
+    <div class="form-wrapper">
+      <!-- Encabezado descriptivo del formulario -->
+      <div class="form-banner">
+        <div class="banner-icon">
+          <ion-icon [name]="modoEdicion ? 'create-outline' : 'add-circle-outline'"></ion-icon>
+        </div>
+        <div class="banner-text">
+          <h2>{{ modoEdicion ? 'Editar Actividad #' + actividadEditId : 'Nueva Actividad Académica' }}</h2>
+          <p>
+            {{ modoEdicion
+              ? 'Actualiza los datos de la actividad seleccionada y guarda los cambios en LocalStorage.'
+              : 'Completa los campos para registrar una actividad con estado inicial Pendiente.' }}
+          </p>
+        </div>
+      </div>
+
+      <form [formGroup]="actividadForm" (ngSubmit)="onSubmit()">
+        <!-- Nombre de la actividad -->
+        <div class="field-group">
+          <ion-item lines="full" class="custom-item">
+            <ion-icon name="document-text-outline" slot="start" color="primary"></ion-icon>
+            <ion-label position="stacked">Nombre de la actividad *</ion-label>
+            <ion-input
+              formControlName="nombre"
+              placeholder="Ej: Entrega de taller de Ionic Framework"
+              [class.ion-invalid]="nombre?.invalid && nombre?.touched">
+            </ion-input>
+          </ion-item>
+          @if (nombre?.invalid && nombre?.touched) {
+            <ion-text color="danger" class="error-text">
+              <p><ion-icon name="alert-circle-outline"></ion-icon> El nombre de la actividad es obligatorio</p>
+            </ion-text>
+          }
+        </div>
+
+        <!-- Descripción -->
+        <div class="field-group">
+          <ion-item lines="full" class="custom-item">
+            <ion-icon name="book-outline" slot="start" color="primary"></ion-icon>
+            <ion-label position="stacked">Descripción</ion-label>
+            <ion-textarea
+              formControlName="descripcion"
+              placeholder="Describe los objetivos, entregables o notas de la actividad..."
+              rows="3">
+            </ion-textarea>
+          </ion-item>
+        </div>
+
+        <!-- Asignatura -->
+        <div class="field-group">
+          <ion-item lines="full" class="custom-item">
+            <ion-icon name="school-outline" slot="start" color="primary"></ion-icon>
+            <ion-label position="stacked">Asignatura *</ion-label>
+            <ion-input
+              formControlName="asignatura"
+              placeholder="Selecciona abajo o escribe la asignatura"
+              [class.ion-invalid]="asignatura?.invalid && asignatura?.touched">
+            </ion-input>
+          </ion-item>
+
+          <div class="sugerencias-asignatura">
+            <span class="sugerencias-label">Selección rápida de asignatura:</span>
+            <div class="chips-container">
+              @for (asig of asignaturasSugeridas; track asig) {
+                <ion-chip
+                  [color]="asignatura?.value === asig ? 'primary' : 'medium'"
+                  [outline]="asignatura?.value !== asig"
+                  (click)="seleccionarAsignatura(asig)">
+                  <ion-icon name="school-outline"></ion-icon>
+                  <ion-label>{{ asig }}</ion-label>
+                </ion-chip>
+              }
+            </div>
+          </div>
+
+          @if (asignatura?.invalid && asignatura?.touched) {
+            <ion-text color="danger" class="error-text">
+              <p><ion-icon name="alert-circle-outline"></ion-icon> La asignatura es obligatoria</p>
+            </ion-text>
+          }
+        </div>
+
+        <!-- Tipo de actividad: taller, examen o proyecto -->
+        <div class="field-group">
+          <ion-item lines="full" class="custom-item">
+            <ion-icon name="construct-outline" slot="start" color="primary"></ion-icon>
+            <ion-label position="stacked">Tipo de actividad *</ion-label>
+            <ion-select
+              formControlName="tipo"
+              interface="popover"
+              placeholder="Seleccione: Taller, Examen o Proyecto"
+              [class.ion-invalid]="tipo?.invalid && tipo?.touched">
+              @for (tipoAct of tiposActividad; track tipoAct.value) {
+                <ion-select-option [value]="tipoAct.value">{{ tipoAct.label }}</ion-select-option>
+              }
+            </ion-select>
+          </ion-item>
+          @if (tipo?.invalid && tipo?.touched) {
+            <ion-text color="danger" class="error-text">
+              <p><ion-icon name="alert-circle-outline"></ion-icon> El tipo de actividad es obligatorio</p>
+            </ion-text>
+          }
+        </div>
+
+        <!-- Actividad prioritaria -->
+        <div class="priority-toggle-box">
+          <ion-item lines="none" class="toggle-item">
+            <div class="toggle-icon" slot="start">
+              <ion-icon name="star"></ion-icon>
+            </div>
+            <ion-label>
+              <h3>Actividad prioritaria</h3>
+              <p>Destacar esta actividad como entrega urgente o de alto peso</p>
+            </ion-label>
+            <ion-toggle formControlName="prioritaria" slot="end" color="danger"></ion-toggle>
+          </ion-item>
+        </div>
+
+        <!-- Recursos necesarios: internet, computador, biblioteca -->
+        <div class="section-header">
+          <ion-icon name="layers-outline" color="primary"></ion-icon>
+          <ion-label>Recursos necesarios</ion-label>
+        </div>
+        <ion-list lines="none" class="recursos-list">
+          @for (recurso of recursosDisponibles; track recurso.value) {
+            <ion-item class="recurso-item">
+              <ion-icon
+                [name]="recurso.value === 'internet' ? 'wifi-outline' : (recurso.value === 'computador' ? 'desktop-outline' : 'library-outline')"
+                slot="start"
+                color="primary">
+              </ion-icon>
+              <ion-label>{{ recurso.label }}</ion-label>
+              <ion-checkbox
+                slot="end"
+                color="primary"
+                [checked]="actividadForm.get('recursos')?.value?.includes(recurso.value)"
+                (ionChange)="onRecursoChange($event, recurso.value)">
+              </ion-checkbox>
+            </ion-item>
+          }
+        </ion-list>
+
+        <!-- Botones -->
+        <div class="button-group">
+          <ion-button
+            type="button"
+            fill="outline"
+            color="medium"
+            expand="block"
+            (click)="limpiarFormulario()"
+            [disabled]="enviando">
+            <ion-icon name="refresh-outline" slot="start"></ion-icon>
+            Limpiar Formulario
+          </ion-button>
+          <ion-button
+            type="submit"
+            color="primary"
+            expand="block"
+            [disabled]="enviando">
+            @if (enviando) {
+              <ion-spinner slot="start" name="crescent"></ion-spinner>
+            } @else {
+              <ion-icon [name]="modoEdicion ? 'checkmark-done-outline' : 'checkmark-circle-outline'" slot="start"></ion-icon>
+            }
+            {{ modoEdicion ? 'Actualizar Actividad' : 'Guardar Actividad' }}
+          </ion-button>
+        </div>
+      </form>
+    </div>
+  </div>
+</ion-content>

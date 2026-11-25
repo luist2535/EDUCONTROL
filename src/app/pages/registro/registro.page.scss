@@ -1,0 +1,240 @@
+.form-wrapper {
+  max-width: 680px;
+  margin: 0 auto;
+  background: #ffffff;
+  border-radius: 22px;
+  padding: 24px;
+  box-shadow: var(--shadow-md);
+  border: 1px solid #e2e8f0;
+}
+
+.form-banner {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 18px 20px;
+  background: linear-gradient(135deg, #eff6ff 0%, #eef2ff 100%);
+  border: 1px solid #bfdbfe;
+  border-radius: 16px;
+  margin-bottom: 24px;
+
+  .banner-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 14px;
+    background: #2563eb;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-shadow: 0 6px 14px rgba(37, 99, 235, 0.25);
+
+    ion-icon {
+      font-size: 1.75rem;
+    }
+  }
+
+  .banner-text {
+    h2 {
+      margin: 0 0 4px 0;
+      font-size: 1.18rem;
+      font-weight: 800;
+      color: #1e3a8a;
+    }
+
+    p {
+      margin: 0;
+      font-size: 0.84rem;
+      color: #475569;
+      line-height: 1.45;
+    }
+  }
+}
+
+.field-group {
+  margin-bottom: 16px;
+}
+
+.custom-item {
+  --background: #f8fafc;
+  --padding-start: 14px;
+  --padding-end: 14px;
+  --inner-padding-end: 6px;
+  border-radius: 14px;
+  border: 1px solid #e2e8f0;
+
+  ion-label {
+    font-weight: 700 !important;
+    color: #1e293b !important;
+    font-size: 0.92rem !important;
+    margin-bottom: 4px;
+  }
+}
+
+.error-text {
+  display: block;
+  margin: 6px 0 4px 8px;
+  font-size: 0.78rem;
+  font-weight: 600;
+
+  p {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+}
+
+.sugerencias-asignatura {
+  margin: 10px 4px 4px;
+
+  .sugerencias-label {
+    display: block;
+    font-size: 0.76rem;
+    font-weight: 600;
+    color: #64748b;
+    margin-bottom: 8px;
+  }
+
+  .chips-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+
+    ion-chip {
+      margin: 0;
+      font-size: 0.78rem;
+      font-weight: 600;
+      height: 32px;
+      border-radius: 10px;
+    }
+  }
+}
+
+.priority-toggle-box {
+  margin: 20px 0;
+  border-radius: 16px;
+  border: 1px solid #fecaca;
+  background: #fff5f5;
+  overflow: hidden;
+
+  .toggle-item {
+    --background: transparent;
+    --padding-start: 14px;
+    --padding-end: 14px;
+
+    .toggle-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 11px;
+      background: #fee2e2;
+      color: #dc2626;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 12px;
+
+      ion-icon {
+        font-size: 1.25rem;
+      }
+    }
+
+    ion-label {
+      h3 {
+        margin: 0 0 2px 0;
+        font-size: 0.95rem;
+        font-weight: 700;
+        color: #7f1d1d;
+      }
+
+      p {
+        margin: 0;
+        font-size: 0.76rem;
+        color: #991b1b;
+      }
+    }
+  }
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 20px 0 10px 4px;
+
+  ion-icon {
+    font-size: 1.2rem;
+  }
+
+  ion-label {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #0f172a;
+  }
+}
+
+.recursos-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 24px;
+  background: transparent;
+  padding: 0;
+
+  .recurso-item {
+    --background: #f8fafc;
+    --padding-start: 12px;
+    --padding-end: 10px;
+    --inner-padding-end: 4px;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    margin: 0;
+
+    ion-icon {
+      font-size: 1.2rem;
+      margin-right: 8px;
+    }
+
+    ion-label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #1e293b;
+    }
+  }
+}
+
+.button-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 12px;
+
+  ion-button {
+    --border-radius: 12px;
+    height: 48px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    margin: 0;
+  }
+}
+
+@media (min-width: 640px) {
+  .form-wrapper {
+    padding: 32px;
+  }
+
+  .button-group {
+    flex-direction: row;
+
+    ion-button {
+      flex: 1;
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .recursos-list {
+    grid-template-columns: 1fr;
+  }
+}

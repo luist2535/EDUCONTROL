@@ -1,0 +1,252 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>EduControl</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="cargarDatosDemo()" fill="clear" class="header-demo-btn" title="Cargar actividades de ejemplo">
+        <ion-icon name="sparkles-outline" slot="start"></ion-icon>
+        <span>Datos Demo</span>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="page-container">
+    <!-- Indicador visual de carga mientras se recupera la información almacenada -->
+    @if (cargando) {
+      <div class="loading-container">
+        <div class="spinner-box">
+          <ion-spinner name="crescent" color="primary"></ion-spinner>
+        </div>
+        <h3>Recuperando información académica...</h3>
+        <p>Sincronizando registros desde LocalStorage</p>
+      </div>
+    }
+
+    @if (!cargando) {
+      <!-- Tarjeta de bienvenida Hero -->
+      <ion-card class="welcome-card">
+        <div class="hero-bg-icon">
+          <ion-icon name="school-outline"></ion-icon>
+        </div>
+        <ion-card-header>
+          <div class="hero-badge">
+            <ion-icon name="ribbon-outline"></ion-icon>
+            <span>PANEL ACADÉMICO • SEMESTRE ACTIVO</span>
+          </div>
+          <ion-card-title>¡Bienvenido a EduControl!</ion-card-title>
+          <ion-card-subtitle>Sistema de Gestión de Actividades Académicas</ion-card-subtitle>
+        </ion-card-header>
+        <ion-card-content>
+          <p>
+            Registra, consulta, modifica y administra tus talleres, exámenes y proyectos con almacenamiento persistente en LocalStorage.
+          </p>
+          <div class="hero-actions">
+            <a routerLink="/registro" class="hero-btn primary ion-activatable ripple-parent">
+              <ion-icon name="add-circle-outline"></ion-icon>
+              <span>Nueva Actividad</span>
+              <ion-ripple-effect></ion-ripple-effect>
+            </a>
+            @if (estadisticas.total === 0) {
+              <button type="button" (click)="cargarDatosDemo()" class="hero-btn secondary ion-activatable ripple-parent">
+                <ion-icon name="sparkles-outline"></ion-icon>
+                <span>Cargar Datos de Ejemplo</span>
+                <ion-ripple-effect></ion-ripple-effect>
+              </button>
+            } @else {
+              <a routerLink="/consulta" class="hero-btn secondary ion-activatable ripple-parent">
+                <ion-icon name="list-outline"></ion-icon>
+                <span>Ver Mis Actividades</span>
+                <ion-ripple-effect></ion-ripple-effect>
+              </a>
+            }
+          </div>
+        </ion-card-content>
+      </ion-card>
+
+      <!-- Tres tarjetas que presentan el total de actividades registradas, pendientes y completadas -->
+      <div class="stats-grid">
+        <ion-card class="stat-card total ion-activatable ripple-parent" routerLink="/consulta">
+          <ion-card-content>
+            <div class="icon-capsule blue">
+              <ion-icon name="list-outline"></ion-icon>
+            </div>
+            <div class="stat-info">
+              <span class="stat-value">{{ estadisticas.total }}</span>
+              <span class="stat-label">Registradas</span>
+              <span class="stat-sub">Total en sistema</span>
+            </div>
+            <ion-ripple-effect></ion-ripple-effect>
+          </ion-card-content>
+        </ion-card>
+
+        <ion-card class="stat-card pendiente ion-activatable ripple-parent" routerLink="/consulta">
+          <ion-card-content>
+            <div class="icon-capsule amber">
+              <ion-icon name="time-outline"></ion-icon>
+            </div>
+            <div class="stat-info">
+              <span class="stat-value">{{ estadisticas.pendientes }}</span>
+              <span class="stat-label">Pendientes</span>
+              <span class="stat-sub">Por entregar</span>
+            </div>
+            <ion-ripple-effect></ion-ripple-effect>
+          </ion-card-content>
+        </ion-card>
+
+        <ion-card class="stat-card completada ion-activatable ripple-parent" routerLink="/consulta">
+          <ion-card-content>
+            <div class="icon-capsule emerald">
+              <ion-icon name="checkmark-circle-outline"></ion-icon>
+            </div>
+            <div class="stat-info">
+              <span class="stat-value">{{ estadisticas.completadas }}</span>
+              <span class="stat-label">Completadas</span>
+              <span class="stat-sub">Entregadas al día</span>
+            </div>
+            <ion-ripple-effect></ion-ripple-effect>
+          </ion-card-content>
+        </ion-card>
+      </div>
+
+      <!-- Barra de progreso que representa el porcentaje de actividades completadas -->
+      <ion-card class="progress-card">
+        <ion-card-header>
+          <div class="progress-title-row">
+            <div class="title-with-icon">
+              <div class="mini-icon-box">
+                <ion-icon name="trending-up-outline"></ion-icon>
+              </div>
+              <div>
+                <ion-card-title>Progreso del Semestre</ion-card-title>
+                <p class="progress-subtitle">{{ getMensajeProgreso() }}</p>
+              </div>
+            </div>
+            <div class="progress-pill">
+              {{ estadisticas.progreso }}%
+            </div>
+          </div>
+        </ion-card-header>
+        <ion-card-content>
+          <div class="progress-container">
+            <ion-progress-bar
+              [value]="estadisticas.progreso / 100"
+              color="primary"
+              type="determinate">
+            </ion-progress-bar>
+            <div class="progress-footer">
+              <span>{{ estadisticas.completadas }} de {{ estadisticas.total }} actividades completadas</span>
+              <span class="progress-percent-text">{{ estadisticas.progreso }}% completado</span>
+            </div>
+          </div>
+        </ion-card-content>
+      </ion-card>
+
+      <!-- Vista rápida de actividades pendientes / prioritarias -->
+      @if (actividadesDestacadas.length > 0) {
+        <ion-card class="priority-card">
+          <ion-card-header>
+            <div class="section-header-row">
+              <div class="title-with-icon">
+                <div class="mini-icon-box warning">
+                  <ion-icon name="flame-outline"></ion-icon>
+                </div>
+                <div>
+                  <ion-card-title>Próximas Entregas Pendientes</ion-card-title>
+                  <p class="progress-subtitle">Marca como completada o consulta sus detalles</p>
+                </div>
+              </div>
+              <a routerLink="/consulta" class="view-all-link">
+                Ver todas <ion-icon name="arrow-forward-outline"></ion-icon>
+              </a>
+            </div>
+          </ion-card-header>
+          <ion-card-content>
+            <div class="priority-list">
+              @for (act of actividadesDestacadas; track act.id) {
+                <div class="priority-item">
+                  <div class="priority-main">
+                    <div class="priority-top">
+                      <h4>{{ act.nombre }}</h4>
+                      @if (act.prioritaria) {
+                        <span class="prio-tag">
+                          <ion-icon name="star"></ion-icon> Prioritaria
+                        </span>
+                      }
+                    </div>
+                    <div class="priority-meta">
+                      <span><ion-icon name="school-outline"></ion-icon> {{ act.asignatura }}</span>
+                      <span class="dot">•</span>
+                      <span class="type-pill">{{ getTipoLabel(act.tipo) }}</span>
+                    </div>
+                  </div>
+                  <ion-button
+                    size="small"
+                    color="success"
+                    fill="outline"
+                    (click)="completarRapido(act, $event)">
+                    <ion-icon name="checkmark-outline" slot="start"></ion-icon>
+                    Completar
+                  </ion-button>
+                </div>
+              }
+            </div>
+          </ion-card-content>
+        </ion-card>
+      }
+
+      <!-- Navegación a las secciones del sistema -->
+      <ion-card class="quick-actions">
+        <ion-card-header>
+          <ion-card-title>Módulos de EduControl</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <div class="actions-grid">
+            <a routerLink="/registro" class="action-button ion-activatable ripple-parent">
+              <div class="action-icon blue">
+                <ion-icon name="add-circle-outline"></ion-icon>
+              </div>
+              <div class="action-text">
+                <strong>Registrar Actividad</strong>
+                <small>Crear nuevo taller, examen o proyecto</small>
+              </div>
+              <ion-ripple-effect></ion-ripple-effect>
+            </a>
+
+            <a routerLink="/consulta" class="action-button ion-activatable ripple-parent">
+              <div class="action-icon indigo">
+                <ion-icon name="list-outline"></ion-icon>
+              </div>
+              <div class="action-text">
+                <strong>Consultar y Administrar</strong>
+                <small>Buscar, filtrar, editar y eliminar</small>
+              </div>
+              <ion-ripple-effect></ion-ripple-effect>
+            </a>
+
+            <a routerLink="/informacion" class="action-button ion-activatable ripple-parent">
+              <div class="action-icon cyan">
+                <ion-icon name="school-outline"></ion-icon>
+              </div>
+              <div class="action-text">
+                <strong>Información Académica</strong>
+                <small>Asignaturas, docentes y métricas</small>
+              </div>
+              <ion-ripple-effect></ion-ripple-effect>
+            </a>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    }
+  </div>
+
+  <!-- Botón flotante ubicado en la parte inferior derecha para acceder al registro de nuevas actividades -->
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button routerLink="/registro" color="primary" title="Registrar nueva actividad">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>
