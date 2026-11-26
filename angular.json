@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "educontrol": {
+    "app": {
       "projectType": "application",
       "schematics": {
         "@angular/component": {
@@ -57,10 +57,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "educontrol:build:production"
+              "buildTarget": "app:build:production"
             },
             "development": {
-              "browserTarget": "educontrol:build:development"
+              "buildTarget": "app:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -68,7 +68,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "educontrol:build"
+            "buildTarget": "app:build"
           }
         },
         "test": {
@@ -84,24 +84,24 @@
         "ionic-cordova-serve": {
           "builder": "@ionic/angular-toolkit:cordova-serve",
           "options": {
-            "cordovaBuildTarget": "educontrol:ionic-cordova-build",
-            "devServerTarget": "educontrol:serve"
+            "cordovaBuildTarget": "app:ionic-cordova-build",
+            "devServerTarget": "app:serve"
           },
           "configurations": {
             "production": {
-              "cordovaBuildTarget": "educontrol:ionic-cordova-build:production",
-              "devServerTarget": "educontrol:serve:production"
+              "cordovaBuildTarget": "app:ionic-cordova-build:production",
+              "devServerTarget": "app:serve:production"
             }
           }
         },
         "ionic-cordova-build": {
           "builder": "@ionic/angular-toolkit:cordova-build",
           "options": {
-            "browserTarget": "educontrol:build"
+            "buildTarget": "app:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "educontrol:build:production"
+              "buildTarget": "app:build:production"
             }
           }
         }
