@@ -19,29 +19,61 @@ export class ActividadService {
     this.recuperarActividades(true);
   }
 
+  // =========================================================================
+  // OPERACIONES REQUERIDAS POR EL EXAMEN:
+  // 1. Convertir objetos a JSON
+  // 2. Convertir JSON a objetos
+  // 3. Guardar actividades (en LocalStorage con clave 'actividades')
+  // 4. Recuperar actividades (desde LocalStorage con clave 'actividades')
+  // =========================================================================
+
   /**
-   * Convierte el arreglo de objetos Actividad a formato JSON
+   * Operación: Convertir objetos a JSON
+   * Transforma el arreglo de objetos o cualquier objeto Actividad a string JSON
    */
-  convertirAJson(actividades: Actividad[]): string {
+  convertirObjetosAJson(actividades: Actividad[]): string {
     return JSON.stringify(actividades);
   }
 
   /**
-   * Convierte una cadena JSON a un arreglo de objetos Actividad
+   * Operación: Convertir JSON a objetos
+   * Parsea un string en formato JSON y lo retorna como arreglo de objetos Actividad
    */
-  convertirDesdeJson(json: string): Actividad[] {
-    const parsed = JSON.parse(json);
-    return Array.isArray(parsed) ? parsed : [];
+  convertirJsonAObjetos(json: string): Actividad[] {
+    try {
+      const parsed = JSON.parse(json);
+      return Array.isArray(parsed) ? (parsed as Actividad[]) : [];
+    } catch (e) {
+      console.error('Error al convertir JSON a objetos:', e);
+      return [];
+    }
   }
 
   /**
+   * Alias de compatibilidad
+   */
+  convertirAJson(actividades: Actividad[]): string {
+    return this.convertirObjetosAJson(actividades);
+  }
+
+  /**
+   * Alias de compatibilidad
+   */
+  convertirDesdeJson(json: string): Actividad[] {
+    return this.convertirJsonAObjetos(json);
+  }
+
+  /**
+   * Operación: Recuperar actividades
    * Recupera las actividades almacenadas en LocalStorage bajo la clave 'actividades'
+   * convirtiendo el JSON almacenado a objetos y asignándolos al arreglo
    */
   recuperarActividades(notificar = false): Actividad[] {
     try {
       const data = localStorage.getItem(STORAGE_KEY);
       if (data !== null) {
-        this.actividades = this.convertirDesdeJson(data);
+        // Conversión de JSON a objetos
+        this.actividades = this.convertirJsonAObjetos(data);
         const maxId = this.actividades.length > 0
           ? Math.max(...this.actividades.map(a => Number(a.id) || 0))
           : 0;
@@ -50,7 +82,7 @@ export class ActividadService {
         return this.cargarDatosDemo();
       }
     } catch (error) {
-      console.error('Error al cargar actividades desde LocalStorage:', error);
+      console.error('Error al recuperar actividades desde LocalStorage:', error);
       this.actividades = [];
       this.nextId = 1;
     }
@@ -61,12 +93,15 @@ export class ActividadService {
   }
 
   /**
+   * Operación: Guardar actividades
    * Guarda el arreglo de actividades en LocalStorage bajo la clave 'actividades'
+   * convirtiendo primero el arreglo de objetos a formato JSON
    */
   guardarActividades(actividades: Actividad[] = this.actividades): void {
     try {
       this.actividades = [...actividades];
-      const json = this.convertirAJson(this.actividades);
+      // Conversión de objetos a JSON
+      const json = this.convertirObjetosAJson(this.actividades);
       localStorage.setItem(STORAGE_KEY, json);
       this.actividadesSubject.next([...this.actividades]);
     } catch (error) {
