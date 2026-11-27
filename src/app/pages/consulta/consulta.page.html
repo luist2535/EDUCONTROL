@@ -16,12 +16,8 @@
   <!-- Buscador por nombre -->
   <ion-toolbar class="filter-toolbar">
     <div class="toolbar-inner">
-      <ion-searchbar
-        [(ngModel)]="busqueda"
-        (ionInput)="onBusquedaChange()"
-        placeholder="Buscar actividad por nombre o asignatura..."
-        animated
-        class="custom-searchbar">
+      <ion-searchbar [(ngModel)]="busqueda" (ionInput)="onBusquedaChange()"
+        placeholder="Buscar actividad por nombre o asignatura..." animated class="custom-searchbar">
       </ion-searchbar>
     </div>
   </ion-toolbar>
@@ -48,167 +44,154 @@
   <div class="page-container">
     <!-- Indicador de carga con skeleton -->
     @if (cargando) {
-      <div class="skeleton-list">
-        @for (item of [1, 2, 3, 4]; track item) {
-          <ion-item lines="none" class="skeleton-item">
-            <ion-label>
-              <h3>
-                <ion-skeleton-text animated style="width: 55%; height: 20px; border-radius: 6px;"></ion-skeleton-text>
-              </h3>
-              <p>
-                <ion-skeleton-text animated style="width: 75%; height: 15px; border-radius: 6px; margin-top: 8px;"></ion-skeleton-text>
-              </p>
-              <p>
-                <ion-skeleton-text animated style="width: 40%; height: 14px; border-radius: 6px; margin-top: 8px;"></ion-skeleton-text>
-              </p>
-            </ion-label>
-          </ion-item>
-        }
-      </div>
+    <div class="skeleton-list">
+      @for (item of [1, 2, 3, 4]; track item) {
+      <ion-item lines="none" class="skeleton-item">
+        <ion-label>
+          <h3>
+            <ion-skeleton-text animated style="width: 55%; height: 20px; border-radius: 6px;"></ion-skeleton-text>
+          </h3>
+          <p>
+            <ion-skeleton-text animated
+              style="width: 75%; height: 15px; border-radius: 6px; margin-top: 8px;"></ion-skeleton-text>
+          </p>
+          <p>
+            <ion-skeleton-text animated
+              style="width: 40%; height: 14px; border-radius: 6px; margin-top: 8px;"></ion-skeleton-text>
+          </p>
+        </ion-label>
+      </ion-item>
+      }
+    </div>
     } @else if (actividadesFiltradas.length === 0) {
-      <!-- Mensaje cuando no hay actividades -->
-      <div class="empty-state">
-        <div class="empty-icon-circle">
-          <ion-icon [name]="getEmptyIcon()"></ion-icon>
-        </div>
-        <h3>{{ getEmptyTitle() }}</h3>
-        <p>{{ getEmptyMessage() }}</p>
-        <div class="empty-actions">
-          <ion-button routerLink="/registro" color="primary" fill="solid">
-            <ion-icon name="add-circle-outline" slot="start"></ion-icon>
-            Registrar Actividad
-          </ion-button>
-        </div>
+    <!-- Mensaje cuando no hay actividades -->
+    <div class="empty-state">
+      <div class="empty-icon-circle">
+        <ion-icon [name]="getEmptyIcon()"></ion-icon>
       </div>
+      <h3>{{ getEmptyTitle() }}</h3>
+      <p>{{ getEmptyMessage() }}</p>
+      <div class="empty-actions">
+        <ion-button routerLink="/registro" color="primary" fill="solid">
+          <ion-icon name="add-circle-outline" slot="start"></ion-icon>
+          Registrar Actividad
+        </ion-button>
+      </div>
+    </div>
     } @else {
-      <div class="swipe-hint-banner">
-        <ion-icon name="swap-horizontal-outline"></ion-icon>
-        <span>Desliza cada actividad hacia la izquierda (o pulsa <strong>Opciones</strong>) para <strong>Editar</strong> o <strong>Eliminar</strong></span>
-      </div>
+    <div class="swipe-hint-banner">
+      <ion-icon name="swap-horizontal-outline"></ion-icon>
+      <span>Desliza cada actividad hacia la izquierda (o pulsa <strong>Opciones</strong>) para <strong>Editar</strong> o
+        <strong>Eliminar</strong></span>
+    </div>
 
-      <!-- Lista de actividades -->
-      <ion-list lines="none" class="activities-list">
-        @for (actividad of actividadesFiltradas; track actividad.id) {
-          <ion-item-sliding #slidingItem class="sliding-card" [attr.data-tipo]="actividad.tipo">
-            <ion-item
-              class="actividad-item ion-activatable ripple-parent"
-              [class.completada]="actividad.estado === 'completada'">
+    <!-- Lista de actividades -->
+    <ion-list lines="none" class="activities-list">
+      @for (actividad of actividadesFiltradas; track actividad.id) {
+      <ion-item-sliding #slidingItem class="sliding-card" [attr.data-tipo]="actividad.tipo">
+        <ion-item class="actividad-item ion-activatable ripple-parent"
+          [class.completada]="actividad.estado === 'completada'">
 
-              <ion-ripple-effect></ion-ripple-effect>
+          <ion-ripple-effect></ion-ripple-effect>
 
-              <!-- Datos de la actividad -->
-              <div class="actividad-info">
-                <div class="actividad-header">
-                  <div class="title-block">
-                    <span class="id-pill">#{{ actividad.id }}</span>
-                    <h3>{{ actividad.nombre }}</h3>
-                  </div>
-
-                  <div class="badges-block">
-                    @if (actividad.prioritaria) {
-                      <ion-badge color="danger" class="prioritaria-chip">
-                        <ion-icon name="star"></ion-icon>
-                        Prioritaria
-                      </ion-badge>
-                    }
-                    <ion-badge [color]="getEstadoColor(actividad.estado)" class="estado-badge">
-                      <ion-icon [name]="getEstadoIcon(actividad.estado)"></ion-icon>
-                      {{ actividad.estado | titlecase }}
-                    </ion-badge>
-                  </div>
-                </div>
-
-                <div class="actividad-meta">
-                  <span class="meta-pill subject">
-                    <ion-icon name="school-outline"></ion-icon>
-                    {{ actividad.asignatura }}
-                  </span>
-                  <span class="meta-pill type" [attr.data-tipo]="actividad.tipo">
-                    <ion-icon [name]="getTipoIcon(actividad.tipo)"></ion-icon>
-                    {{ getTipoLabel(actividad.tipo) }}
-                  </span>
-                  @if (actividad.recursos && actividad.recursos.length > 0) {
-                    <span class="meta-pill resources">
-                      <ion-icon name="layers-outline"></ion-icon>
-                      {{ actividad.recursos.length }} {{ actividad.recursos.length === 1 ? 'recurso' : 'recursos' }}
-                    </span>
-                  }
-                </div>
-
-                @if (actividad.descripcion) {
-                  <p class="actividad-desc">{{ actividad.descripcion }}</p>
-                }
-
-                <!-- Botones de acción -->
-                <div class="item-actions">
-                  <ion-button
-                    size="small"
-                    fill="outline"
-                    color="primary"
-                    (click)="verDetalle(actividad, slidingItem, $event)">
-                    <ion-icon name="eye-outline" slot="start"></ion-icon>
-                    Ver Detalles
-                  </ion-button>
-
-                  @if (actividad.estado !== 'completada') {
-                    <ion-button
-                      size="small"
-                      fill="solid"
-                      color="success"
-                      (click)="completarActividad(actividad, slidingItem, $event)">
-                      <ion-icon name="checkmark-outline" slot="start"></ion-icon>
-                      Completar
-                    </ion-button>
-                  }
-
-                  <ion-button
-                    size="small"
-                    fill="clear"
-                    color="medium"
-                    class="slide-trigger-btn"
-                    title="Opciones de Edición y Eliminación"
-                    (click)="toggleDeslizar(slidingItem, $event)">
-                    <ion-icon name="swap-horizontal-outline" slot="start"></ion-icon>
-                    Opciones
-                  </ion-button>
-                </div>
+          <!-- Datos de la actividad -->
+          <div class="actividad-info">
+            <div class="actividad-header">
+              <div class="title-block">
+                <span class="id-pill">#{{ actividad.id }}</span>
+                <h3>{{ actividad.nombre }}</h3>
               </div>
-            </ion-item>
 
-            <!-- Opciones al deslizar a la izquierda -->
-            <ion-item-options side="end">
-              <ion-item-option
-                color="primary"
-                (click)="editarActividad(actividad, slidingItem, $event)">
-                <ion-icon name="create-outline" slot="top"></ion-icon>
-                Editar
-              </ion-item-option>
-              <ion-item-option
-                color="danger"
-                (click)="eliminarActividad(actividad, slidingItem, $event)">
-                <ion-icon name="trash-outline" slot="top"></ion-icon>
-                Eliminar
-              </ion-item-option>
-            </ion-item-options>
+              <div class="badges-block">
+                @if (actividad.prioritaria) {
+                <ion-badge color="danger" class="prioritaria-chip">
+                  <ion-icon name="star"></ion-icon>
+                  Prioritaria
+                </ion-badge>
+                }
+                <ion-badge [color]="getEstadoColor(actividad.estado)" class="estado-badge">
+                  <ion-icon [name]="getEstadoIcon(actividad.estado)"></ion-icon>
+                  {{ actividad.estado | titlecase }}
+                </ion-badge>
+              </div>
+            </div>
 
-            <!-- Opciones al deslizar a la derecha -->
-            <ion-item-options side="start">
-              <ion-item-option
-                [color]="actividad.estado === 'completada' ? 'medium' : 'success'"
-                (click)="completarActividad(actividad, slidingItem, $event)"
-                [disabled]="actividad.estado === 'completada'">
-                <ion-icon [name]="actividad.estado === 'completada' ? 'checkmark-done-outline' : 'checkmark-outline'" slot="top"></ion-icon>
-                {{ actividad.estado === 'completada' ? 'Completada' : 'Completar' }}
-              </ion-item-option>
-            </ion-item-options>
-          </ion-item-sliding>
-        }
-      </ion-list>
+            <div class="actividad-meta">
+              <span class="meta-pill subject">
+                <ion-icon name="school-outline"></ion-icon>
+                {{ actividad.asignatura }}
+              </span>
+              <span class="meta-pill type" [attr.data-tipo]="actividad.tipo">
+                <ion-icon [name]="getTipoIcon(actividad.tipo)"></ion-icon>
+                {{ getTipoLabel(actividad.tipo) }}
+              </span>
+              @if (actividad.recursos && actividad.recursos.length > 0) {
+              <span class="meta-pill resources">
+                <ion-icon name="layers-outline"></ion-icon>
+                {{ actividad.recursos.length }} {{ actividad.recursos.length === 1 ? 'recurso' : 'recursos' }}
+              </span>
+              }
+            </div>
 
-      <!-- Resumen inferior -->
-      <div class="resumen">
-        <span>Mostrando <strong>{{ actividadesFiltradas.length }}</strong> de <strong>{{ actividades.length }}</strong> actividades almacenadas en LocalStorage</span>
-      </div>
+            @if (actividad.descripcion) {
+            <p class="actividad-desc">{{ actividad.descripcion }}</p>
+            }
+
+            <!-- Botones de acción -->
+            <div class="item-actions">
+              <ion-button size="small" fill="outline" color="primary"
+                (click)="verDetalle(actividad, slidingItem, $event)">
+                <ion-icon name="eye-outline" slot="start"></ion-icon>
+                Ver Detalles
+              </ion-button>
+
+              @if (actividad.estado !== 'completada') {
+              <ion-button size="small" fill="solid" color="success"
+                (click)="completarActividad(actividad, slidingItem, $event)">
+                <ion-icon name="checkmark-outline" slot="start"></ion-icon>
+                Completar
+              </ion-button>
+              }
+
+              <ion-button size="small" fill="clear" color="medium" class="slide-trigger-btn"
+                title="Opciones de Edición y Eliminación" (click)="toggleDeslizar(slidingItem, $event)">
+                <ion-icon name="swap-horizontal-outline" slot="start"></ion-icon>
+                Opciones
+              </ion-button>
+            </div>
+          </div>
+        </ion-item>
+
+        <!-- Opciones al deslizar a la izquierda -->
+        <ion-item-options side="end">
+          <ion-item-option color="primary" (click)="editarActividad(actividad, slidingItem, $event)">
+            <ion-icon name="create-outline" slot="top"></ion-icon>
+            Editar
+          </ion-item-option>
+          <ion-item-option color="danger" (click)="eliminarActividad(actividad, slidingItem, $event)">
+            <ion-icon name="trash-outline" slot="top"></ion-icon>
+            Eliminar
+          </ion-item-option>
+        </ion-item-options>
+
+        <!-- Opciones al deslizar a la derecha -->
+        <ion-item-options side="start">
+          <ion-item-option [color]="actividad.estado === 'completada' ? 'medium' : 'success'"
+            (click)="completarActividad(actividad, slidingItem, $event)" [disabled]="actividad.estado === 'completada'">
+            <ion-icon [name]="actividad.estado === 'completada' ? 'checkmark-done-outline' : 'checkmark-outline'"
+              slot="top"></ion-icon>
+            {{ actividad.estado === 'completada' ? 'Completada' : 'Completar' }}
+          </ion-item-option>
+        </ion-item-options>
+      </ion-item-sliding>
+      }
+    </ion-list>
+
+    <!-- Resumen inferior -->
+    <div class="resumen">
+      <span>Mostrando <strong>{{ actividadesFiltradas.length }}</strong> de <strong>{{ actividades.length }}</strong>
+        actividades almacenadas en LocalStorage</span>
+    </div>
     }
   </div>
 

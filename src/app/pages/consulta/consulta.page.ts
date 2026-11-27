@@ -28,7 +28,7 @@ export class ConsultaPage implements OnInit {
     private alertController: AlertController,
     private modalController: ModalController,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.cargarActividades();
