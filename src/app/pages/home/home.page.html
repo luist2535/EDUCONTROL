@@ -4,18 +4,12 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>EduControl</ion-title>
-    <ion-buttons slot="end">
-      <ion-button (click)="cargarDatosDemo()" fill="clear" class="header-demo-btn" title="Cargar actividades de ejemplo">
-        <ion-icon name="sparkles-outline" slot="start"></ion-icon>
-        <span>Datos Demo</span>
-      </ion-button>
-    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
   <div class="page-container">
-    <!-- Indicador visual de carga mientras se recupera la información almacenada -->
+    <!-- Indicador de carga -->
     @if (cargando) {
       <div class="loading-container">
         <div class="spinner-box">
@@ -27,7 +21,7 @@
     }
 
     @if (!cargando) {
-      <!-- Tarjeta de bienvenida Hero -->
+      <!-- Tarjeta de bienvenida -->
       <ion-card class="welcome-card">
         <div class="hero-bg-icon">
           <ion-icon name="school-outline"></ion-icon>
@@ -50,24 +44,16 @@
               <span>Nueva Actividad</span>
               <ion-ripple-effect></ion-ripple-effect>
             </a>
-            @if (estadisticas.total === 0) {
-              <button type="button" (click)="cargarDatosDemo()" class="hero-btn secondary ion-activatable ripple-parent">
-                <ion-icon name="sparkles-outline"></ion-icon>
-                <span>Cargar Datos de Ejemplo</span>
-                <ion-ripple-effect></ion-ripple-effect>
-              </button>
-            } @else {
-              <a routerLink="/consulta" class="hero-btn secondary ion-activatable ripple-parent">
-                <ion-icon name="list-outline"></ion-icon>
-                <span>Ver Mis Actividades</span>
-                <ion-ripple-effect></ion-ripple-effect>
-              </a>
-            }
+            <a routerLink="/consulta" class="hero-btn secondary ion-activatable ripple-parent">
+              <ion-icon name="list-outline"></ion-icon>
+              <span>Ver Mis Actividades</span>
+              <ion-ripple-effect></ion-ripple-effect>
+            </a>
           </div>
         </ion-card-content>
       </ion-card>
 
-      <!-- Tres tarjetas que presentan el total de actividades registradas, pendientes y completadas -->
+      <!-- Tarjetas de resumen de actividades -->
       <div class="stats-grid">
         <ion-card class="stat-card total ion-activatable ripple-parent" routerLink="/consulta">
           <ion-card-content>
@@ -112,7 +98,7 @@
         </ion-card>
       </div>
 
-      <!-- Barra de progreso que representa el porcentaje de actividades completadas -->
+      <!-- Barra de progreso -->
       <ion-card class="progress-card">
         <ion-card-header>
           <div class="progress-title-row">
@@ -145,7 +131,7 @@
         </ion-card-content>
       </ion-card>
 
-      <!-- Vista rápida de actividades pendientes / prioritarias -->
+      <!-- Actividades pendientes -->
       @if (actividadesDestacadas.length > 0) {
         <ion-card class="priority-card">
           <ion-card-header>
@@ -198,7 +184,7 @@
         </ion-card>
       }
 
-      <!-- Navegación a las secciones del sistema -->
+      <!-- Navegación rápida -->
       <ion-card class="quick-actions">
         <ion-card-header>
           <ion-card-title>Módulos de EduControl</ion-card-title>
@@ -243,7 +229,7 @@
     }
   </div>
 
-  <!-- Botón flotante ubicado en la parte inferior derecha para acceder al registro de nuevas actividades -->
+  <!-- Botón flotante para ir a registro -->
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button routerLink="/registro" color="primary" title="Registrar nueva actividad">
       <ion-icon name="add"></ion-icon>

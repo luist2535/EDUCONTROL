@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { IonicModule, MenuController, ToastController } from '@ionic/angular';
+import { IonicModule, MenuController } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { addIcons } from 'ionicons';
@@ -38,7 +38,6 @@ import {
   alertCircleOutline,
   bookOutline,
   folderOpenOutline,
-  sparklesOutline,
   swapHorizontalOutline,
   personCircleOutline,
   ribbonOutline,
@@ -70,8 +69,7 @@ export class AppComponent implements OnInit {
   constructor(
     private menuController: MenuController,
     private router: Router,
-    private actividadService: ActividadService,
-    private toastController: ToastController
+    private actividadService: ActividadService
   ) {
     addIcons({
       'home-outline': homeOutline,
@@ -108,7 +106,6 @@ export class AppComponent implements OnInit {
       'alert-circle-outline': alertCircleOutline,
       'book-outline': bookOutline,
       'folder-open-outline': folderOpenOutline,
-      'sparkles-outline': sparklesOutline,
       'swap-horizontal-outline': swapHorizontalOutline,
       'person-circle-outline': personCircleOutline,
       'ribbon-outline': ribbonOutline,
@@ -129,18 +126,5 @@ export class AppComponent implements OnInit {
   async navegar(url: string) {
     await this.menuController.close();
     this.router.navigateByUrl(url);
-  }
-
-  async cargarDemoDesdeMenu() {
-    this.actividadService.cargarDatosDemo();
-    await this.menuController.close();
-    const toast = await this.toastController.create({
-      message: '¡6 actividades de demostración cargadas en LocalStorage!',
-      duration: 2500,
-      color: 'success',
-      position: 'bottom'
-    });
-    await toast.present();
-    this.router.navigateByUrl('/home');
   }
 }

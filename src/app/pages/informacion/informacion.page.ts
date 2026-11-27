@@ -56,7 +56,7 @@ export class InformacionPage implements OnInit {
     const todasLasActividades = this.actividadService.getAll();
     const listaAsignaturas: AsignaturaInfo[] = [...this.asignaturasBase];
 
-    // Si hay actividades registradas con otras asignaturas personalizadas, agregarlas dinámicamente
+    // Agregar asignaturas adicionales registradas en actividades
     todasLasActividades.forEach(act => {
       const nombreLimpio = (act.asignatura || '').trim();
       if (nombreLimpio) {

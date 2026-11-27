@@ -1,17 +1,15 @@
-/* ============================================
-   EduControl - Estilos Globales Pro
-   ============================================ */
+/* Estilos Globales */
 
-/* Core CSS requerido para que los componentes de Ionic funcionen correctamente */
+/* Core CSS de Ionic */
 @import "@ionic/angular/css/core.css";
 
-/* CSS básico recomendado para aplicaciones con Ionic */
+/* CSS base de Ionic */
 @import "@ionic/angular/css/normalize.css";
 @import "@ionic/angular/css/structure.css";
 @import "@ionic/angular/css/typography.css";
 @import "@ionic/angular/css/display.css";
 
-/* Utilidades CSS opcionales */
+/* Utilidades CSS */
 @import "@ionic/angular/css/padding.css";
 @import "@ionic/angular/css/float-elements.css";
 @import "@ionic/angular/css/text-alignment.css";
@@ -22,7 +20,7 @@
   --ion-font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --ion-color-white: #ffffff;
 
-  /* Paleta moderna académica Indigo / Royal Blue */
+  /* Colores del tema */
   --ion-color-primary: #2563eb;
   --ion-color-primary-rgb: 37, 99, 235;
   --ion-color-primary-contrast: #ffffff;
@@ -176,7 +174,7 @@ ion-modal.detalle-modal {
   overflow: hidden;
 }
 
-/* Scrollbar elegante */
+/* Scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;

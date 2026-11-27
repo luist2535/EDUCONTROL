@@ -44,7 +44,7 @@ export class HomePage implements OnInit {
   private actualizarEstadisticas() {
     this.estadisticas = this.actividadService.getEstadisticas();
     const todas = this.actividadService.getAll();
-    // Mostrar primero las pendientes prioritarias, luego otras pendientes
+    // Ordenar pendientes mostrando primero las prioritarias
     this.actividadesDestacadas = todas
       .filter(a => a.estado === 'pendiente')
       .sort((a, b) => Number(b.prioritaria) - Number(a.prioritaria))
@@ -53,7 +53,7 @@ export class HomePage implements OnInit {
 
   getMensajeProgreso(): string {
     if (this.estadisticas.total === 0) {
-      return 'Registra tu primera actividad o carga los datos de ejemplo para comenzar el seguimiento.';
+      return 'Registra tu primera actividad para comenzar el seguimiento.';
     }
     if (this.estadisticas.progreso === 100) {
       return '¡Felicitaciones! Has completado el 100% de tus actividades académicas registradas.';
@@ -81,15 +81,6 @@ export class HomePage implements OnInit {
     this.actividadService.completar(actividad.id);
     this.actualizarEstadisticas();
     await this.mostrarToast(`¡Actividad "${actividad.nombre}" completada!`, 'success');
-  }
-
-  async cargarDatosDemo() {
-    this.cargando = true;
-    await new Promise(resolve => setTimeout(resolve, 350));
-    this.actividadService.cargarDatosDemo();
-    this.actualizarEstadisticas();
-    this.cargando = false;
-    await this.mostrarToast('¡Se cargaron 6 actividades académicas de demostración en LocalStorage!', 'success');
   }
 
   async mostrarToast(mensaje: string, color: string = 'success') {

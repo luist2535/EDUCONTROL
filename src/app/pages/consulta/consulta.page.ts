@@ -73,7 +73,7 @@ export class ConsultaPage implements OnInit {
       resultado = resultado.filter(a => a.estado === 'completada');
     }
 
-    // Filtrar por búsqueda por nombre
+    // Filtrar por búsqueda
     if (this.busqueda.trim()) {
       const termino = this.busqueda.toLowerCase().trim();
       resultado = resultado.filter(a =>
@@ -102,15 +102,6 @@ export class ConsultaPage implements OnInit {
     } else {
       await slidingItem.open('end');
     }
-  }
-
-  async cargarDemo() {
-    this.cargando = true;
-    await new Promise(resolve => setTimeout(resolve, 350));
-    this.actividadService.cargarDatosDemo();
-    this.refrescarLista();
-    this.cargando = false;
-    await this.mostrarToast('¡Se cargaron 6 actividades de ejemplo en LocalStorage!', 'success');
   }
 
   getEmptyIcon(): string {
@@ -149,7 +140,7 @@ export class ConsultaPage implements OnInit {
     if (this.segmento === 'pendientes') {
       return '¡Excelente! No tienes actividades pendientes por el momento.';
     }
-    return 'Registra tu primera actividad académica o carga los datos de ejemplo para explorar este módulo.';
+    return 'Registra tu primera actividad académica para visualizarla en esta lista.';
   }
 
   getTipoLabel(tipo: string): string {
